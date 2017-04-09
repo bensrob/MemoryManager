@@ -1,5 +1,7 @@
 #ifndef MEMMAN
 	#define uint unsigned int
+	#define MAX 1024
+
 	struct memhead
 	{
 		uint	id;	//Optional id for what called allocated the memory
@@ -31,18 +33,19 @@
 
 		//Data
 		private:
-			memhead	*start;					//First header
-			memhead	*end;					//Last header
-			uint	nextid;					//Next free id number
-			std::map<uint,std::pair<uint,uint>>	stats;	//Numbers and size per id
+			memhead	*start;			//First header
+			memhead	*end;			//Last header
+			uint	nextid;			//Next free id number
+			uint	idsize[MAX];		//Size of allocations per id
+			uint	idnum [MAX];		//Number of allocs per id
 	};
 
 
 	//Inline functions
         inline memman::~memman()        	{       this->delall();         	}
 	inline uint memman::getid()		{	return nextid++;  		}
-	inline uint memman::size( uint id )	{	return stats[id].first; 	}	//Not guarenteed
-	inline uint memman::num ( uint id )	{	return stats[id].second;	}	//Not guarenteed
+	inline uint memman::size( uint id )	{	return idsize[id];		}	//Not guarenteed
+	inline uint memman::num ( uint id )	{	return idnum[id];		}	//Not guarenteed
 	inline void memman::delall( uint id )	{	this->delall( id, false );	}	//Use shared
 	inline void memman::delall()		{	this->delall( 0, true );	}	//Use shared
 

@@ -3,13 +3,13 @@
 void* memman::add( std::size_t size, uint id )
 {
 	memhead *head = (memhead*)malloc( size + sizeof(memhead) );
-	head->id 		= id;
-	head->size		= size;
-	head->next		= 0;
-	head->prev		= this->end;
-	this->end		= head;
-	this->stats[id].first	+= size;
-	this->stats[id].second	+= 1;
+	head->id 	= id;
+	head->size	= size;
+	head->next	= 0;
+	head->prev	= this->end;
+	this->end	= head;
+	this->idsize[id]+= size;
+	this->idnum[id]	+= 1;
 	return (void*) head;
 }
 
