@@ -4,9 +4,6 @@ using namespace std;
 int main()
 {
 	memman manager;
-	memhead mh;
-
-	pair<uint,uint> test = {1,2};
-	cout << test.first << test.second << endl;
+	cout << manager.size( 3 ) << manager.num( 62678 ) << endl;
 
 }
