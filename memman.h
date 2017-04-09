@@ -1,6 +1,7 @@
 #ifndef MEMMAN
 	#define uint unsigned int	//Dont judge me (for alignment, neatness and laziness reasons)
 	#define MAX 1024		//Maximum number of ids
+	#define TAG 16			//Characters allocated for a tag detailing alloc reason
 
 	struct memhead
 	{
@@ -20,32 +21,36 @@
 		//Public Functions
 			void*	add	( std::size_t , uint = 0);	//New allocation in id group
 			void	del	( void* );			//Free specified object
-		inline	void	delall	( uint );			//Delete all in group
+			void	delall	( uint );			//Delete all in group ( 0 for all )
 		inline	uint	size	( uint );			//Combined size of group allocs
 		inline	uint	num	( uint );			//Number for allocs in group
-		inline	uint	getid	();				//Get next free id number
-
+		inline	uint	getid	( std::string );		//Get next free id number
+		inline	char*	id	( uint );			//Get tag for id
+		inline	uint	max	();				//Get number of ids
+		inline 	void	print	();				//Prints current stats
 	private:
-		//Private functions
-		inline	void	delall	();				//Deletes all allocations
-			void	delall	( uint, bool );			//Shared implementation
-
 		//Data
 			memhead	*start;			//First header
 			memhead	*end;			//Last header
 			uint	nextid;			//Next free id number
-			uint	idsize[MAX];		//Size of allocations per id
-			uint	idnum [MAX];		//Number of allocs per id
+			uint	idsize [MAX];		//Current size of allocations per id
+			uint	idnum  [MAX];		//Current number of allocs per id
+                        uint    idtsize[MAX];           //Total size
+                        uint    idtnum [MAX];           //Total number of allocs
+			char	idtag  [MAX][TAG];	//Name specified when recieving an id
 	} 	static memman;
 
 
 	//Inline functions
-        inline memman::~memman()        	{       this->delall();         	}
-	inline uint memman::getid()		{	return nextid++;  		}
-	inline uint memman::size( uint id )	{	return idsize[id];		}	//Not guarenteed
-	inline uint memman::num ( uint id )	{	return idnum[id];		}	//Not guarenteed
-	inline void memman::delall( uint id )	{	this->delall( id, false );	}	//Use shared
-	inline void memman::delall()		{	this->delall( 0, true );	}	//Use shared
-
-	#define MEMMAN
+        inline memman::~memman()        	{       this->delall(0);      	   		}
+	inline uint memman::getid(std::string s){	s.copy( idtag[nextid], TAG-1 );		\
+							return nextid++;  			}
+	inline uint memman::size( uint id )	{	return idsize[id];			}
+	inline uint memman::num ( uint id )	{	return idnum[id];			}
+	inline char* memman::id( uint id )	{	return idtag[id];			}
+	inline uint memman::max()		{	return nextid;				}
+	inline void memman::print()		{	std::cout << "id\ttag\tnum\tsize\n";	\
+							for( uint i = 1; i != nextid; i++ )	\
+							std::cout << i << "\t" << id(i) << "\t"	<< num(i) << "\\" << idtnum[i] << "\t" << size(i) << "\\" << idtsize[i] << std::endl; }
+#define MEMMAN
 #endif

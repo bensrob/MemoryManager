@@ -8,8 +8,10 @@ void* memman::add( std::size_t size, uint id )
 	head->next	= 0;
 	head->prev	= this->end;
 	this->end	= head;
-	this->idsize[id]+= size;
-	this->idnum[id]	+= 1;
+	this->idsize[id] += size;
+	this->idtsize[id]+=size;
+	this->idnum[id]	 += 1;
+	this->idtnum[id] += 1;
 	if(head->prev)	head->prev->next = head;
 	if(!this->start)this->start = head;
 	return (void*)(head+1);
@@ -29,12 +31,12 @@ void memman::del ( void* todel )
 }
 
 
-void memman::delall( uint id, bool all )
+void memman::delall( uint id )
 {
 	memhead *next = this->start;
 	while( next )
 	{
-		if( all || id == next->id )
+		if( id == 0 || id == next->id )
 		{
 			memhead* cur = next;
 			next = next->next;
