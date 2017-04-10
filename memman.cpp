@@ -1,20 +1,21 @@
 #include "memman.h"
 
-void* memman::add( std::size_t size, std::string tag )
+void* memman::add( std::size_t size, std::string intag )
 {
 	int fullsize = size + sizeof(memhead);
 	memhead *head = (memhead*) memset( malloc( fullsize ), 0, fullsize );
 
-	int i = 0, id = 0;
-	for( ; 	tag.compare( (char*)tag[i]); i++ )
-	if (	tag.compare( (char*)tag[i])	 )	id = i;
-	else 						id = this->nextid++;
-	std::cout << id << "\t" << size << "\t" << tag << "\n";
+	uint i = 0, id = 0;
+	for( ; i!=this->nextid && intag.compare( tag[i]  ); i++)
+	if (   intag.compare( tag[i] )	)	id = i;
+	else 					id = this->nextid++;
+
 	head->id	= id;
 	head->size	= size;
 	head->next	= 0;
 	head->prev	= this->end;
 
+	strcpy( this->tag[id],  intag.substr( 0, TAG-1 ).c_str() );
 	this->end	= head;
 	this->size[id]	+= size;
 	this->tsize[id]	+= size;
@@ -27,7 +28,6 @@ void* memman::add( std::size_t size, std::string tag )
 	return (void*)(head+1);
 }
 
-
 void memman::del ( void* todel )
 {
 	memhead* head = (memhead*)todel-1;
@@ -39,7 +39,6 @@ void memman::del ( void* todel )
 	this->num [head->id]	-= 1;
 	free( head );
 }
-
 
 memman::~memman()
 {

@@ -43,7 +43,7 @@
 	//Override global new to use memman, passing infomation about the caller
 	inline void* operator new  ( size_t size )     {       return memman.add( size, Memman::loc );         }
 	inline void operator delete ( void* todel )    {       memman.del(todel);                              }
-	#define new (Memman::loc=(__PRETTY_FUNCTION__),0)?0:new
+	#define new (Memman::loc=__PRETTY_FUNCTION__,0)?0:new
 
 #define MEMMAN
 #endif
