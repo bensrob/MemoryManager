@@ -1,7 +1,7 @@
 MAKEFLAGS+=-j4
-CXXFLAGS+=-O0 -Wall -Wextra -pedantic -pthread -g	
+CXXFLAGS+=-O0 -Wall -Wextra -pedantic -pthread -g -fno-sized-deallocation	
 CC=g++ -o $@	
-DEP=*.h
+DEP=*.h stl.h.gch
 OBJ=$(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
 main:	$(OBJ)
@@ -10,7 +10,7 @@ main:	$(OBJ)
 %.o: 	%.cpp $(DEP)
 	$(CC) $(CXXFLAGS) -include stl.h $< -c
 
-stl:
+stl.h.gch:
 	g++ $(CXXFLAGS) stl.h
 
 clean:
