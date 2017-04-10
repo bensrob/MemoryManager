@@ -2,6 +2,7 @@
 	#define uint unsigned int	//Dont judge me (for alignment, neatness and laziness reasons)
 	#define MAX 1024		//Maximum number of ids
 	#define TAG 16			//Characters allocated for a tag detailing alloc reason
+	#define GETID memman.getid( __PRETTY_FUNCTION__ )
 
 	struct memhead
 	{
@@ -24,7 +25,7 @@
 			void	delall	( uint );			//Delete all in group ( 0 for all )
 		inline	uint	size	( uint );			//Combined size of group allocs
 		inline	uint	num	( uint );			//Number for allocs in group
-		inline	uint	getid	( std::string );		//Get next free id number
+		inline	uint	getid	( std::string ); //Get next free id number
 		inline	char*	id	( uint );			//Get tag for id
 		inline	uint	max	();				//Get number of ids
 		inline 	void	print	();				//Prints current stats
@@ -51,6 +52,6 @@
 	inline uint memman::max()		{	return nextid;				}
 	inline void memman::print()		{	std::cout << "id\ttag\tnum\tsize\n";	\
 							for( uint i = 1; i != nextid; i++ )	\
-							std::cout << i << "\t" << id(i) << "\t"	<< num(i) << "\\" << idtnum[i] << "\t" << size(i) << "\\" << idtsize[i] << std::endl; }
+							std::cout << i << "\t" << id(i) << "\t"	<< num(i) << "\\" << idtnum[i] << "\t" << size(i) << "\\" << idtsize[i] << "\n"; }
 #define MEMMAN
 #endif

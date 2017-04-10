@@ -1,14 +1,22 @@
 #include "memman.h"
 using namespace std;
 
+int test()
+{
+	uint i = GETID;
+}
+
+
 int main()
 {
+	test();
+
 	uint i = memman.getid("test1");
 	memman.add( sizeof(int), i );
         memman.add( sizeof(int), i );
         memman.add( sizeof(int), i );
 
-        i = memman.getid("test2");
+        i = GETID;
         memman.add( sizeof(int), i );
         memman.add( sizeof(int), i );
         memman.add( sizeof(int), i );
@@ -29,6 +37,7 @@ int main()
         memman.add( sizeof(int), i );
 
 	memman.print();
+	cout << "\n";
 	memman.delall(p);
 	memman.del(l);
 	memman.print();
