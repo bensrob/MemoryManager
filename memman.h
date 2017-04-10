@@ -2,6 +2,7 @@
 	#define uint unsigned int	//Dont judge me (for alignment, neatness and laziness reasons)
 	#define MAX 1024		//Maximum number of ids
 	#define TAG 16			//Characters allocated for a tag detailing alloc reason
+	namespace Memman{ static std::string loc; }	//Location that allocation was called from
 
 	struct memhead
 	{
@@ -15,11 +16,11 @@
 	{
 	public:
 		//(Con|De)structor
-		inline	memman():	start(0), end(0), nextid(1){}
+		inline	memman():	start(0), end(0), nextid(0){}
 			~memman();
 
 		//Public Functions
-			void*	add	( std::size_t , uint = 0);	//New allocation in id group
+			void*	add	( std::size_t, std::string );	//New allocation in tag group
 			void	del	( void* );			//Free specified object
 		inline 	void	print	();				//Prints current stats
 	private:
@@ -36,7 +37,12 @@
 
 
 	//Inline functions
-	inline void memman::print()		{ 	for( uint i = 1; i != nextid; i++ )
-							std::cout << i << "\t" << tag[i] << "\t" << num[i] << "\\" << tnum[i] << "\t" << size[i] << "\\" << tsize[i] << "\n"; }
-	#define MEMMAN
+	inline void memman::print()	{ 	for( uint i = 1; i != nextid; i++ ) //Prints all memory stats
+						std::cout << i << "\t" << tag[i] << "\t" << num[i] << "\\" << tnum[i] << "\t" << size[i] << "\\" << tsize[i] << "\n"; }
+
+	//Override global new to use memman, passing infomation about the caller
+	inline void* operator new  ( size_t size )	{	return memman.add( size, Memman::loc );		}
+	inline void operator delete ( void* todel )	{	memman.del(todel);  				}
+	#define new (memman::func=(__PRETTY_FUNCTION__),0)?0:new
+#define MEMMAN
 #endif

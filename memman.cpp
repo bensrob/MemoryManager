@@ -1,8 +1,9 @@
 #include "memman.h"
 
-void* memman::add( std::size_t size, uint id )
+void* memman::add( std::size_t size, std::string tag )
 {
 	memhead *head = (memhead*)malloc( (size + sizeof(memhead)) );
+/*
 	head->id 	= id;
 	head->size	= size;
 	head->next	= 0;
@@ -14,6 +15,7 @@ void* memman::add( std::size_t size, uint id )
 	this->tnum[id] += 1;
 	if(head->prev)	head->prev->next = head;
 	if(!this->start)this->start = head;
+*/
 	return (void*)(head+1);
 }
 
