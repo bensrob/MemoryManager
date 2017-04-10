@@ -1,3 +1,12 @@
+/*------------------------*/
+/* WARNING NOT THREADSAFE */
+/*------------------------*/
+
+#ifndef PRECOMPILED
+	#include <iostream>
+	#include <string.h>
+#endif
+
 #ifndef MEMMAN
 	#define uint unsigned int	//Dont judge me (for alignment, neatness and laziness reasons)
 	#define MAX 1024		//Maximum number of ids
@@ -37,7 +46,7 @@
 
 
 	//Inline functions
-	inline void memman::print()	{ 	for( uint i = 1; i != nextid; i++ ) //Prints all memory stats
+	inline void memman::print()	{ 	for( uint i = 0; i != nextid; i++ ) //Prints all memory stats
 						std::cout << i << "\t" << tag[i] << "\t" << num[i] << "\\" << tnum[i] << "\t" << size[i] << "\\" << tsize[i] << "\n"; }
 
 	//Override global new to use memman, passing infomation about the caller
