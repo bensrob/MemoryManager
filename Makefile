@@ -10,7 +10,7 @@ main:	$(OBJ)
 %.o: 	%.cpp $(DEP)
 	$(CC) $(CXXFLAGS) -include stl.h $< -c
 
-stl.h.gch:
+stl.h.gch: stl.h
 	g++ $(CXXFLAGS) stl.h
 
 clean:

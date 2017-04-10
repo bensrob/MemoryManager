@@ -13,5 +13,6 @@
         #include <algorithm>
 	#include <sstream>
 	#include <stdlib.h>
+	#include <string.h>
 	#define STL
 #endif
